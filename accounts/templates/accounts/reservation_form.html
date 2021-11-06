@@ -1,5 +1,10 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 {%  extends 'accounts/main.html' %}
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
 
 
 {% block content %}
@@ -12,42 +17,110 @@
     <title>Dependent Dropdown in Django</title>
 </head>
 <body>
-<h2>Reservation Form</h2>
 
-
-<form method="post" id="reservationForm" data-stations-url="{% url 'ajax_load_stations' %}">
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-body">
+<form method="post" id="reservationForm" >
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Submit">
+    <input id = "submit" type="submit" value="Submit">
 </form>
+
+</div>
+	</div>
+        </div>
 
 <script>
     $("#id_city").change(function () {
-        const url = $("#reservationForm").attr("data-stations-url");  // get the url of the `load_cities` view
-        const cityId = $(this).val();  // get the selected country ID from the HTML input
+  
+      var cityId = $(this).val();  // get the selected country ID from the HTML input
 
-        $.ajax({                       // initialize an AJAX request
-            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
-            data: {
-                'city_id': cityId       // add the country id to the GET parameters
-            },
-            success: function (data) {   // `data` is the return of the `load_cities` view function
-                console.log(data);
-                $("#id_station").html(data);  // replace the contents of the city input with the data that came from the server
-                /*
-                let html_data = '<option value="">---------</option>';
-                data.forEach(function (city) {
-                    html_data += `<option value="${city.id}">${city.name}</option>`
-                });
-                console.log(html_data);
-                $("#id_city").html(html_data);
-                */
-            }
-        });
+      $.ajax({                       // initialize an AJAX request
+        url: '/ajax/load-stations/',                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'city': cityId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_station").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
 
     });
 </script>
 
-</body>
-</html>
+<script>
+    $("#id_city1").change(function () {
+  
+      var cityId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: '/ajax/load-stations1/',                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'city': cityId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_station1").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+</script>
+
+<script>
+    config = {
+    enableTime: true,
+    altInput: true,
+    minDate: "today",
+    minTime: "08:00",
+    maxTime: "17:30",
+    dateFormat: "Y-m-d H:i",
+    
+    }
+    flatpickr("input[type = datetime-local]" , config)
+</script>
+   
+
+<script>
+    $('#submit').prop('disabled', true);
+    $("#dropoff").change(function(){
+        var start = $("#pickup").val();
+        var end = $("#dropoff").val(); 
+
+        let startDate = new Date(start);
+        let endDate = new Date(end);
+
+        if (startDate.getTime() >= endDate.getTime() ){
+          alert('Enter a valid date');         
+          $('#submit').prop('disabled', true);
+
+        }else{
+          $('#submit').prop('disabled', false);
+
+        }
+
+    });
+
+    $("#pickup").change(function(){
+        var start = $("#pickup").val();
+        var end = $("#dropoff").val(); 
+
+        let startDate = new Date(start);
+        let endDate = new Date(end);
+
+        if (startDate.getTime() >= endDate.getTime() ){
+          alert('Enter a valid date');          
+          $('#submit').prop('disabled', true);
+
+        }else{
+          $('#submit').prop('disabled', false);
+
+        }
+
+    });
+
+
+
+</script>
+
 {%endblock%}

@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
+    'accounts.apps.AccountsConfig',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -77,8 +78,12 @@ WSGI_APPLICATION = 'rental1.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'rental1db',
+        'USER': 'postgres',
+        'PASSWORD':'CyT23BphsV1zz!!',
+        'HOST':'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -132,3 +137,15 @@ STATICFILES_DIRS=[
 ]
 STATIC_ROOT =  os.path.join(BASE_DIR,'static')
 STATIC_URL = '/static/'
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR , 'rental1/static/images')
+MEDIA_URL= '/images/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'bojkov98@gmail.com'
+EMAIL_HOST_PASSWORD = 'nikifor1'

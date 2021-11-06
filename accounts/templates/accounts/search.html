@@ -1,0 +1,60 @@
+{%  extends 'accounts/main.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+
+            {{myFilter.form}}
+
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+	
+</div>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+                    <th>Customer</th>
+					<th>Car</th>
+					<th>Pick up</th>
+					<th>Date</th>
+					<th>Drop off</th>
+					<th>Date</th>
+					<th>Price</th>
+					<th>Update</th>
+					<th>Remove</th>
+				</tr>
+                {%for i in reservations%}
+					<tr>
+                    <td>{{i.customer}} </td>
+					<td>{{i.car.name}} </td>
+					<td>{{i.station.name}} </td>
+					<td>{{i.pickup_date}} </td>
+					<td>{{i.station1.name}} </td>
+					<td>{{i.dropoff_date}} </td>
+					<td>{{i.get_price}} € </td>
+					<td><a class="btn btn-sm  btn-sm btn-info" href = "{% url 'update_reservation' i.id %}"> Update </a> </td>
+					<td><a class="btn btn-sm btn-sm btn-danger" href = "{% url 'delete_reservation' i.id %}"> Remove </a> </td>
+				
+
+							
+					</tr>
+				{%endfor%}
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+
+{%endblock%}

@@ -1,26 +1,40 @@
 from django import forms
+from django.contrib.auth.models import User
+from django.forms.models import ModelForm
 
 from .models import *
-
-class DateInput(forms.DateInput):
-    input_type = 'date'
+from django.contrib.auth.forms import UserCreationForm
 
 
-class ReservationForm(forms.ModelForm):
+class DateInput(forms.DateTimeField):
+    input_type = 'date' 
+
+class ReservationForm(ModelForm):
+    pickup_date = forms.DateTimeField(
+        label='Pickup Date',
+        widget=forms.widgets.DateTimeInput(attrs={'type':'datetime-local' , 'id':'pickup' , 'name':'from'}),
+    )
+    dropoff_date = forms.DateTimeField(
+        label='Dropoff date',
+        widget=forms.widgets.DateTimeInput(attrs={'type':'datetime-local' , 'id':'dropoff' , 'name': 'to'})
+    )
+ 
     class Meta:
-        widgets = {'pickup_date':DateInput() , 'dropoff_date': DateInput()}
         model = Reservation
         fields = '__all__'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['station'].queryset = Station.objects.none()
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model =  User
+        fields = ['username' , 'email' , 'password1' , 'password2']
+        
 
-        if 'city' in self.data:
-            try:
-                city_id = int(self.data.get('city'))
-                self.fields['station'].queryset = Station.objects.filter(city_id=city_id).order_by('name')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        elif self.instance.pk:
-            self.fields['station'].queryset = self.instance.city.station_set.order_by('name')
+class CustomerForm(ModelForm):
+    class Meta:
+        model = Customer
+        fields = '__all__'
+        exclude = ['user']
+
+    
+
+        

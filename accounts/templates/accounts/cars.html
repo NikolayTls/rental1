@@ -1,26 +1,22 @@
 {%  extends 'accounts/main.html' %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+{% load static %}
 
 {% block content %}
 
-		<br>
-
-		<div class="row">
-			<div class="col-md">
-				<div class="card card-body">
-					<h5>Products</h5>
-				</div>
-				<div class="card card-body">
-					<table class="table">
-						<tr>
-							<th>Product</th>
-							<th>Category</th>
-							<th>Price</th>
-						</tr>
-						
-					</table>
-				</div>
-			</div>
-			
+<div class="row">
+	{% for car in cars %}
+	<div class="col-lg-5">
+		<img class= "img-fluid" alt = "Responsive image" src = "{{car.imageURL}}">
+		<div class="box-element product">
+			<h6><strong>{{car.name}}</strong></h6>
+			<hr>
+			<a class = "btn btn-outline-secondary add-btn" href = "{% url 'create_reservation'%}" >Reserve</a>
+			<a class = "btn btn-outline-secondary" href = "#">View </a>
+			<h4 style = "display : inline-block;float: right">€{{car.category.price_per_day|floatformat:2}}/Day </h4>
 		</div>
+	</div>
+	{%endfor%}
+</div>
 
 {% endblock content %}

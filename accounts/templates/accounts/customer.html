@@ -7,10 +7,10 @@
 <div class="row">
 	<div class="col-md">
 		<div class="card card-body">
-			<h5>Customer:</h5>
+			<h5>Customer: {{customer.name}}</h5>
 			<hr>
-			<a class="btn btn-outline-info  btn-sm btn-block" href="">Update Customer</a>
-			<a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete Customer</a>
+			<a class="btn btn-outline-info  btn-sm btn-block" href=""></a>
+			<a class="btn btn-outline-danger  btn-sm btn-block" href=""></a>
 
 		</div>
 	</div>
@@ -19,16 +19,16 @@
 		<div class="card card-body">
 			<h5>Contact Information</h5>
 			<hr>
-			<p>Email: </p>
-			<p>Phone: </p>
+			<p>Email: {{customer.email}} </p>
+			<p>Phone: {{customer.phone}} </p>
 		</div>
 	</div>
 
 	<div class="col-md">
 		<div class="card card-body">
-			<h5>Total Orders</h5>
+			<h5>Total Reservations</h5>
 			<hr>
-			<h1 style="text-align: center;padding: 10px"></h1>
+			<h1 style="text-align: center;padding: 10px">{{total_reservations}}</h1>
 		</div>
 	</div>
 </div>
@@ -39,6 +39,8 @@
 	<div class="col">
 		<div class="card card-body">
 			<form method="get">
+
+				{{myFilter.form}}
 
 		    <button class="btn btn-primary" type="submit">Search</button>
 		  </form>
@@ -53,14 +55,31 @@
 		<div class="card card-body">
 			<table class="table table-sm">
 				<tr>
-					<th>Product</th>
-					<th>Category</th>
-					<th>Date Orderd</th>
-					<th>Status</th>
+					<th>Car</th>
+					<th>Pick up</th>
+					<th>Date</th>
+					<th>Drop off</th>
+					<th>Date</th>
+					<th>Price</th>
 					<th>Update</th>
 					<th>Remove</th>
 				</tr>
 
+				{%for i in reservations%}
+					<tr>
+					<td>{{i.car.name}} </td>
+					<td>{{i.station.name}} </td>
+					<td>{{i.pickup_date}} </td>
+					<td>{{i.station1.name}} </td>
+					<td>{{i.dropoff_date}} </td>
+					<td>{{i.get_price}} € </td>
+					<td><a class="btn btn-sm  btn-sm btn-info" href = "{% url 'update_reservation' i.id %}"> Update </a> </td>
+					<td><a class="btn btn-sm btn-sm btn-danger" href = "{% url 'delete_reservation' i.id %}"> Remove </a> </td>
+				
+
+							
+					</tr>
+				{%endfor%}
 			</table>
 		</div>
 	</div>

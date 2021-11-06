@@ -5,40 +5,62 @@
 {% include 'accounts/status.html' %}
 
 
-
 <br>
 
 <div class="row">
 	<div class="col-md-5">
 		<h5>CUSTOMERS:</h5>
-		<hr>
+		
 		<div class="card card-body">
-			<a class="btn btn-primary  btn-sm btn-block" href="">Create Customer</a>
 			<table class="table table-sm">
 				<tr>
 					<th></th>
 					<th>Customer</th>
-					<th>Orders</th>
+					<th>Phone</th>
 				</tr>
+
+				{% for i in customers %}
+					<tr>
+						<td><a class="btn btn-sm btn-info" href="{% url 'customer' i.id %}">View</a></td>
+						<td>{{i.name}}</td>
+						<td>{{i.phone}}</td>
+					</tr>
+				{% endfor %}
 
 			</table>
 		</div>
 	</div>
 
 	<div class="col-md-7">
-		<h5>LAST 5 ORDERS</h5>
+		<h5>RESERVATIONS:</h5>
 		<hr>
 		<div class="card card-body">
-			<a class="btn btn-primary  btn-sm btn-block" href="">Create Order</a>
+			<a class="btn btn-primary  btn-sm btn-block" href={% url 'create_reservation' %}>Create Reservation</a>
 			<table class="table table-sm">
 				<tr>
-					<th>Product</th>
-					<th>Date Orderd</th>
-					<th>Status</th>
+					<th>Car</th>
+					<th>Pick up</th>
+					<th>Date</th>
+					<th>Drop off</th>
+					<th>Date</th>
 					<th>Update</th>
 					<th>Remove</th>
 				</tr>
-		
+
+				{%for i in reservations%}
+					<tr>
+					<td>{{i.car.name}} </td>
+					<td>{{i.station.name}} </td>
+					<td>{{i.pickup_date}} </td>
+					<td>{{i.station1.name}} </td>
+					<td>{{i.dropoff_date}} </td>
+					<td><a class="btn btn-sm  btn-sm btn-info" href = "{% url 'update_reservation' i.id %}"> Update </a> </td>
+					<td><a class="btn btn-sm btn-sm btn-danger" href = "{% url 'delete_reservation' i.id %}"> Remove </a> </td>
+				
+
+							
+					</tr>
+				{%endfor%}
 			</table>
 		</div>
 	</div>
