@@ -15,7 +15,9 @@ urlpatterns = [
     path('customer/<str:pk>/', views.customer , name = 'customer'),
     path('cars/', views.car , name = 'car'),
 
+    path('create_reservation/<str:pk>/', views.createReservation, name='create_reservation'),
     path('create_reservation/', views.createReservation, name='create_reservation'),
+
     path('ajax/load-stations/', views.load_stations, name='ajax_load_stations'), # AJAX
     path('ajax/load-stations1/', views.load_stations1, name='ajax_load_stations1'), # AJAX
     path('ajax/validate_username/', views.validate_username, name='ajax_validate_username'), # AJAX
@@ -23,6 +25,7 @@ urlpatterns = [
 
     path('update_reservation/<str:pk>/', views.updateReservation, name='update_reservation'),
     path('delete_reservation/<str:pk>/', views.deleteReservation, name='delete_reservation'),
+    path('test/' , views.test , name = 'name'),
 
     path('search/', views.search, name='search'),
      
@@ -37,6 +40,7 @@ urlpatterns = [
 
     path('reset_password_complete/' , auth_views.PasswordResetCompleteView.as_view(template_name = "accounts/password_reset_done.html"),
      name  = "password_reset_complete" )
+
 
 
 ]

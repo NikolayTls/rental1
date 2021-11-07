@@ -135,6 +135,7 @@ def customer(request , pk):
 @login_required(login_url = 'login')
 @allowed_users(allowed_roles = ['admin'])
 def search(request):
+    customers = Customer.objects.all()
     
     reservations = Reservation.objects.all()
 
@@ -148,8 +149,13 @@ def search(request):
 @allowed_users(allowed_roles = ['admin' , 'customer'])
 def createReservation(request):
     customer = request.user.customer
+    car = request.GET.get('car')
 
-    form = ReservationForm(initial = {'customer':customer })
+    form = ReservationForm(initial = {'customer':customer , 'car':car})
+
+    print(car)
+
+
     if request.method == 'POST':
         form = ReservationForm(request.POST)
         if form.is_valid():
@@ -225,3 +231,7 @@ def load_stations1(request):
     city_id = request.GET.get('city')
     stations = Station.objects.filter(city_id=city_id).order_by('name')
     return render(request, 'accounts/city_dropdown_list_option1.html', {'stations': stations})
+
+
+def test(request):
+    return render(request , 'accounts/test.html')

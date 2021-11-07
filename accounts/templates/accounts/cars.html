@@ -1,8 +1,8 @@
 {%  extends 'accounts/main.html' %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 {% load static %}
-
 {% block content %}
+
+
 
 <div class="row">
 	{% for car in cars %}
@@ -11,12 +11,49 @@
 		<div class="box-element product">
 			<h6><strong>{{car.name}}</strong></h6>
 			<hr>
-			<a class = "btn btn-outline-secondary add-btn" href = "{% url 'create_reservation'%}" >Reserve</a>
-			<a class = "btn btn-outline-secondary" href = "#">View </a>
+			<a class = "btn btn-outline-secondary add-btn" href = "/create_reservation?car={{car.id|urlencode}}" >Reserve</a>
+
+			<button id = "btnShow" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{car.id}}">Car Info</button>
+
+			<div class="modal fade" id="myModal{{car.id}}"  role="dialog" aria-labelledby="myModalLabel">
+
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+
+                			<h4 class="modal-title" id="myModalLabel"><strong>{{car.name}}</strong></h4>
+
+						</div>
+						<div class="modal-body">
+							<div class="modal-body">Model Year: {{car.model_year}}</div>
+							<div class="modal-body"> Occupant Amount: {{car.category.occupant_amount}}</div>
+							<div class="modal-body">Baggage Amount: {{car.category.baggage_amount}}</div>
+							<div class="modal-body">Minimum Driver Age: {{car.category.driver_age|floatformat:0 }}</div>
+							<div class="modal-body">Power(in ps): {{car.category.Power|floatformat:0 }}</div>
+							<div class="modal-body">Door Amount: {{car.category.door_amount|floatformat:0 }}</div>
+
+						</div>
+
+						<div class="modal-footer">
+						
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			
 			<h4 style = "display : inline-block;float: right">€{{car.category.price_per_day|floatformat:2}}/Day </h4>
 		</div>
 	</div>
 	{%endfor%}
 </div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src = {% static 'js/main.js' %}> </script>
+
+
+
 
 {% endblock content %}
+			
