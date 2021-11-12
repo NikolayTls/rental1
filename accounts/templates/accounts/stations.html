@@ -1,0 +1,61 @@
+{%  extends 'accounts/main.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<div class="row">
+	{% for station in stations %}
+	<div class="col-lg-6">
+		
+        
+		<div class="box-element product">
+			<h6><strong>{{station.name}}</strong></h6>
+			<hr>
+			<a class = "btn btn-outline-secondary add-btn" href = "/create_reservation?city={{station.city.id|urlencode}}&station={{station.id}}" >Book a car here</a>
+
+			<button id = "btnShow" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{station.id}}">Station Info</button>
+
+			<div class="modal fade" id="myModal{{station.id}}"  role="dialog" aria-labelledby="myModalLabel">
+
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+
+                			<h4 class="modal-title" id="myModalLabel"><strong>{{station.name}}</strong></h4>
+
+						</div>
+						<div class="modal-body">
+							<div class="modal-body"> Street :  {{station.street}} </div>
+							<div class="modal-body">  <a target="_blank" href =  "{{station.link}}"> Find the station </a> </div>
+							<div class="modal-body">Post Code :  {{station.post_code}} </div>
+							<div class="modal-body"> Phone : {{station.phone}} </div>
+							<div class="modal-body"> E-Mail : bozhkovcars@bozhkovcars.de </div>
+							
+							
+
+						</div>
+
+						<div class="modal-footer">
+						
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+		</div>
+	</div>
+	{%endfor%}
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src = {% static 'js/main.js' %}> </script>
+
+
+
+
+{% endblock content %}
+			

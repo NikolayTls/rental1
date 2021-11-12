@@ -1,70 +1,83 @@
 {%  extends 'accounts/main.html' %}
+{% load static%}
 
 {% block content %}
 
 {% include 'accounts/status.html' %}
 
+</hr>
+<!-- Demo header-->
+<section class="py-5 header text-center">
+    <div class="container py-4">
+        <header>
+            <h1 class="display-4">If service counts, count on us!</h1>
+            <p class="font-italic text-muted mb-1">As your competent partner for rental cars, our top priority is to make you mobile. With good service and attractive prices we know how to convince. But the best thing you can do is to get an impression by yourself</p>
+            
+                
+            </p>
+        </header>
+    </div>
+</section>
 
-<br>
 
-<div class="row">
-	<div class="col-md-5">
-		<h5>CUSTOMERS:</h5>
-		
-		<div class="card card-body">
-			<table class="table table-sm">
-				<tr>
-					<th></th>
-					<th>Customer</th>
-					<th>Phone</th>
-				</tr>
+<section class="pb-5">
+    <div class="container text-center">
+        <!-- Masonry grid -->
+        <div class="row">
+            <!-- Grid sizer -->
+            <div class="row"></div>
+            
+            <!-- Grid item -->
+            <div class="col-lg-4 col-md-6 grid-item mb-4">
+                <a href = "/cars"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <h2 class="h4">Cars</h2>
+                <p class="small text-muted font-italic" >Find our wild variety of cars</p>
+            </div>
+            
+            <!-- Grid item -->
+            <div class="col-lg-4 col-md-6 grid-item mb-4">
+                <a href = "/stations"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <h2 class="h4">Stations</h2>
+                <p class="small text-muted font-italic">You can book a car in more than 10 stations across Germnay</p>
+            </div>
+            
+            <!-- Grid item -->
+            <div class="col-lg-4 col-md-6 grid-item mb-4">
+                <a href = "/create_reservation"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <h2 class="h4">Book a car now</h2>
+                <p class="small text-muted font-italic">Make a reservation</p>
+            </div>
+            
+            <!-- Grid item -->
+            <div class="col-lg-4 col-md-6 grid-item mb-4">
+                <a href = "/user_reservations"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <h2 class="h4">My reservations</h2>
+                <p class="small text-muted font-italic">View your reservations</p>
+            </div>
+            
+            <!-- Grid item -->
+            <div class="col-lg-4 col-md-6 grid-item mb-4">
+                <a href = "/account"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <h2 class="h4">Settings</h2>
+                <p class="small text-muted font-italic">Customize your settings</p>
+            </div>
 
-				{% for i in customers %}
-					<tr>
-						<td><a class="btn btn-sm btn-info" href="{% url 'customer' i.id %}">View</a></td>
-						<td>{{i.name}}</td>
-						<td>{{i.phone}}</td>
-					</tr>
-				{% endfor %}
+            <!-- Grid item -->
+            <div class="col-lg-4 col-md-6 grid-item mb-4">
+                <a href = "/search"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <h2 class="h4">All Reservations</h2>
+                <p class="small text-muted font-italic">All Reservations</p>
+            </div>
+            <!-- Grid item -->
+            <div class="col-lg-4 col-md-6 grid-item mb-4">
+                <a href = "/search1"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <h2 class="h4">All customers</h2>
+                <p class="small text-muted font-italic">All customers</p>
+            </div>
+            
+        </div>
+    </div>
+</section>
 
-			</table>
-		</div>
-	</div>
-
-	<div class="col-md-7">
-		<h5>RESERVATIONS:</h5>
-		<hr>
-		<div class="card card-body">
-			<a class="btn btn-primary  btn-sm btn-block" href={% url 'create_reservation' %}>Create Reservation</a>
-			<table class="table table-sm">
-				<tr>
-					<th>Car</th>
-					<th>Pick up</th>
-					<th>Date</th>
-					<th>Drop off</th>
-					<th>Date</th>
-					<th>Update</th>
-					<th>Remove</th>
-				</tr>
-
-				{%for i in reservations%}
-					<tr>
-					<td>{{i.car.name}} </td>
-					<td>{{i.station.name}} </td>
-					<td>{{i.pickup_date}} </td>
-					<td>{{i.station1.name}} </td>
-					<td>{{i.dropoff_date}} </td>
-					<td><a class="btn btn-sm  btn-sm btn-info" href = "{% url 'update_reservation' i.id %}"> Update </a> </td>
-					<td><a class="btn btn-sm btn-sm btn-danger" href = "{% url 'delete_reservation' i.id %}"> Remove </a> </td>
-				
-
-							
-					</tr>
-				{%endfor%}
-			</table>
-		</div>
-	</div>
-
-</div>
 
 {% endblock %}

@@ -59,11 +59,30 @@ class Station(models.Model):
     name = models.CharField(max_length=100 , null = True)
     street = models.CharField(max_length=100 , null = True)
     post_code = models.CharField(max_length=100 , null = True)
+    image = models.ImageField(null = True , blank = True)
+    phone = models.CharField(max_length=100 , null = True)
+    link = models.URLField(max_length=200, null = True)
     city = models.ForeignKey(City , on_delete = models.CASCADE)
 
     def __str__(self):
         return self.name 
 
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
+
+
+class Protection(models.Model):
+    name = models.CharField(max_length = 100, null = True)
+    price = models.FloatField(max_length=10 , null = True)
+    description = models.CharField(max_length = 999, null = True)
+
+    def __str__(self):
+        return self.name
 
 class Reservation(models.Model):
     customer = models.ForeignKey(Customer , null=True, on_delete = models.SET_NULL )
@@ -78,16 +97,16 @@ class Reservation(models.Model):
     city1 = models.ForeignKey(City , on_delete = models.CASCADE , related_name = "return_city" )
     station1 = models.ForeignKey(Station , on_delete = models.CASCADE , related_name = "return_station" )
     dropoff_date = models.DateTimeField (null = True )
+
+    protection = models.ForeignKey(Protection , null=True, blank = False , on_delete = models.CASCADE )
    
     
     def __str__(self):
         return self.car.name
 
-
-
-    @property
     def get_price(self):
         if (self.dropoff_date - self.pickup_date).days<1:
-            return self.car.category.price_per_day
+            return self.car.category.price_per_day + self.protection.price
         else:
-            return (self.dropoff_date - self.pickup_date).days * self.car.category.price_per_day
+            return (self.dropoff_date - self.pickup_date).days * (self.car.category.price_per_day) + (self.dropoff_date - self.pickup_date).days * (self.protection.price)
+            

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path , include
 from django.contrib.auth import views as auth_views
 from .import views
 
@@ -14,8 +14,9 @@ urlpatterns = [
 
     path('customer/<str:pk>/', views.customer , name = 'customer'),
     path('cars/', views.car , name = 'car'),
-
-    path('create_reservation/<str:pk>/', views.createReservation, name='create_reservation'),
+    path('stations/', views.station , name = 'station'),
+    path('create_reservation/<str:pk2>/', views.createReservation, name='create_reservation'),
+    path('create_reservation/<str:pk>/<str:pk1>/', views.createReservation, name='create_reservation'),
     path('create_reservation/', views.createReservation, name='create_reservation'),
 
     path('ajax/load-stations/', views.load_stations, name='ajax_load_stations'), # AJAX
@@ -28,6 +29,10 @@ urlpatterns = [
     path('test/' , views.test , name = 'name'),
 
     path('search/', views.search, name='search'),
+    path('search1/', views.search1, name='search1'),
+    path('user_reservations/', views.userReservations, name='user_reservations'),
+
+    path('accounts/', include('allauth.urls')),
      
     path('reset_password/' , auth_views.PasswordResetView.as_view(template_name = "accounts/password_reset.html"),
      name = "reset_password"),

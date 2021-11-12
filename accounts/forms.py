@@ -18,10 +18,15 @@ class ReservationForm(ModelForm):
         label='Dropoff date',
         widget=forms.widgets.DateTimeInput(attrs={'type':'datetime-local' , 'id':'dropoff' , 'name': 'to'})
     )
- 
     class Meta:
         model = Reservation
+        widgets = {'customer':forms.HiddenInput() , 'get_price':forms.FloatField()}
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ReservationForm, self).__init__(*args, **kwargs)
+        self.fields['city1'].label = "Return City"
+        self.fields['station1'].label = "Return Station"
 
 class CreateUserForm(UserCreationForm):
     class Meta:

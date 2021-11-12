@@ -14,35 +14,38 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dependent Dropdown in Django</title>
 </head>
 <body>
 
-<div class="row">
+<div class="row down">
 	<div class="col-md-6">
-		<div class="card card-body">
-<form method="post" id="reservationForm" >
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input id = "submit" type="submit" value="Submit">
-</form>
-
+    <h3> Reservation Form</h3>
+		<div class="form-group">
+      <form method="post" id="reservationForm" name = "reservation" >
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input class = "btn btn-success btn-bg" id = "submit" type="submit" value="Submit">
+      </form>
+      <div id = "main" class = "form-control"> </div>
+      {%  include 'accounts/modal.html' %}
+    </div>
+  </div>
 </div>
-	</div>
-        </div>
+
+
 
 <script>
     $("#id_city").change(function () {
   
-      var cityId = $(this).val();  // get the selected country ID from the HTML input
+      var cityId = $(this).val(); 
 
-      $.ajax({                       // initialize an AJAX request
-        url: '/ajax/load-stations/',                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      $.ajax({                       
+        url: '/ajax/load-stations/',               
         data: {
-          'city': cityId       // add the country id to the GET parameters
+          'city': cityId       
         },
-        success: function (data) {   // `data` is the return of the `load_cities` view function
-          $("#id_station").html(data);  // replace the contents of the city input with the data that came from the server
+        success: function (data) {   
+          $("#id_station").html(data); 
         }
       });
 
@@ -52,15 +55,15 @@
 <script>
     $("#id_city1").change(function () {
   
-      var cityId = $(this).val();  // get the selected country ID from the HTML input
+      var cityId = $(this).val();  
 
-      $.ajax({                       // initialize an AJAX request
-        url: '/ajax/load-stations1/',                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      $.ajax({                       
+        url: '/ajax/load-stations1/',                   
         data: {
-          'city': cityId       // add the country id to the GET parameters
+          'city': cityId       
         },
-        success: function (data) {   // `data` is the return of the `load_cities` view function
-          $("#id_station1").html(data);  // replace the contents of the city input with the data that came from the server
+        success: function (data) {   
+          $("#id_station1").html(data);  
         }
       });
 
@@ -120,6 +123,46 @@
     });
 
 
+
+</script>
+
+<script>
+    $("#dropoff").change(function(){
+      var start = $("#pickup").val();
+      var end = $("#dropoff").val();
+
+      const oneDay = 24 * 60 * 60 * 1000;
+    
+      let startDate = new Date(start);
+      let endDate = new Date(end);
+
+      const diffDays = Math.round(Math.abs((startDate-endDate)/oneDay));
+      console.log(diffDays)
+  
+      var div = document.createElement("div");
+      document.getElementById("main").innerHTML = "";
+      div.innerHTML = 'Days : '+ diffDays;
+      document.getElementById("main").appendChild(div); 
+      
+    });
+
+    $("#pickup").change(function(){
+      var start = $("#pickup").val();
+      var end = $("#dropoff").val();
+
+      const oneDay = 24 * 60 * 60 * 1000;
+
+      let startDate = new Date(start);
+      let endDate = new Date(end);
+
+      const diffDays = Math.round(Math.abs((startDate-endDate)/oneDay));
+
+      var div = document.createElement("div");
+      document.getElementById("main").innerHTML = "";
+      div.innerHTML = 'Days : '+ diffDays;
+      document.getElementById("main").appendChild(div);
+    });
+    
 
 </script>
 

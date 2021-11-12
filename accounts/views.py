@@ -9,17 +9,17 @@ from .models import *
 
 from .filters import *
 
-from django.contrib.auth.models import Group
 
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate , login , logout
 from .decorators import *
 
-from django.urls import reverse
-from urllib.parse import urlencode
+from django.core.mail import send_mail
+from django.conf import settings
+
+
 
 
 @unauthenticated_user
@@ -71,10 +71,9 @@ def home(request):
     total_customers = customers.count()
 
     stations = Station.objects.all().count()
-
-
+   
     context = {'reservations':reservations , 'customers':customers , 'total_reservations':total_reservations ,
-     'total_customers':total_customers , 'stations' : stations}
+     'total_customers':total_customers , 'stations' : stations }
     return render(request , 'accounts/dashboard.html' , context)
 
 @login_required(login_url = 'login')
@@ -83,10 +82,25 @@ def userPage(request):
     reservations = request.user.customer.reservation_set.all()
     total_reservations = reservations.count()
 
+    customers = Customer.objects.all()
+    total_customers = customers.count()
+    stations = Station.objects.all().count()
 
 
-    context = {'reservations':reservations , 'total_reservations':total_reservations}
+
+    context = {'reservations':reservations , 'total_reservations':total_reservations , 'total_customers':total_customers , 'stations':stations}
     return render(request , 'accounts/user.html' , context)
+
+
+
+@login_required(login_url = 'login')
+def userReservations(request):
+
+    reservations = request.user.customer.reservation_set.all()
+
+    context = {'reservations':reservations}
+    return render(request , 'accounts/user_reservations.html' , context)
+
 
 @login_required(login_url = 'login')
 def accountSettings(request):
@@ -114,6 +128,13 @@ def car(request):
     context = {'cars':cars }
     return render(request ,'accounts/cars.html' , context )
 
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles = ['admin' , 'customer'])
+def station(request):
+    station = Station.objects.all()
+
+    context = {'stations':station }
+    return render(request ,'accounts/stations.html' , context )
 
 @login_required(login_url = 'login')
 @allowed_users(allowed_roles = ['admin'])
@@ -135,7 +156,7 @@ def customer(request , pk):
 @login_required(login_url = 'login')
 @allowed_users(allowed_roles = ['admin'])
 def search(request):
-    customers = Customer.objects.all()
+
     
     reservations = Reservation.objects.all()
 
@@ -145,26 +166,51 @@ def search(request):
     context = {'myFilter':myFilter , 'reservations':reservations}
 
     return render(request ,'accounts/search.html' ,context )
+
+
+def search1(request):
+    customers = Customer.objects.all()
+    
+    myFilter = ReservationFilter2(request.GET , queryset = customers)
+    customers = myFilter.qs
+
+    context = {'myFilter':myFilter , 'customers':customers}
+
+    return render(request ,'accounts/search1.html', context )
+
 @login_required(login_url = 'login')
 @allowed_users(allowed_roles = ['admin' , 'customer'])
 def createReservation(request):
     customer = request.user.customer
+    current_user = request.user
     car = request.GET.get('car')
+    station = request.GET.get('station')
+    city = request.GET.get('city')
+    reservation = Reservation.objects.all()
+    protection = Protection.objects.all()
 
-    form = ReservationForm(initial = {'customer':customer , 'car':car})
-
-    print(car)
-
+    form = ReservationForm(initial = {'customer':customer , 'car':car , 'station':station , 'city':city})
 
     if request.method == 'POST':
+    
         form = ReservationForm(request.POST)
         if form.is_valid():
+            message = form.cleaned_data
+            content = {"%s: %s" % (key , value) for (key , value) in message.items()}
+            content = "\n".join(content)
+            send_mail('Reservation',
+            content,
+            settings.EMAIL_HOST_USER,
+            [current_user.email],
+            fail_silently = False
+            )
             form.save()
             return redirect('/')
 
-    context = {'form':form}
+    context = {'form':form , 'reservation':reservation , 'protection':protection}
 
     return render(request, 'accounts/reservation_form.html',context)
+    
 @login_required(login_url = 'login')
 @allowed_users(allowed_roles = ['admin' , 'customer'])
 def updateReservation(request, pk):

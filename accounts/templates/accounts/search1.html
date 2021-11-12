@@ -1,0 +1,49 @@
+{%  extends 'accounts/main.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+
+            {{myFilter.form}}
+
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+	
+</div>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+                    <th></th>
+                    <th>User</th>
+                    <th>Customer</th>
+					<th>Phone</th>
+					<th>E-Mail</th>
+				</tr>
+                {%for i in customers%}
+					<tr>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'customer' i.id %}">View</a></td>
+                    <td>{{i.user}} </td>
+					<td>{{i.name}} </td>
+					<td>{{i.phone}} </td>
+					<td>{{i.email}} </td>				
+					</tr>
+				{%endfor%}
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+
+{%endblock%}
