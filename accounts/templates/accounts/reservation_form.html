@@ -1,6 +1,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 {%  extends 'accounts/main.html' %}
 
@@ -24,7 +25,7 @@
       <form method="post" id="reservationForm" name = "reservation" >
       {% csrf_token %}
       {{ form.as_p }}
-      <input class = "btn btn-success btn-bg" id = "submit" type="submit" value="Submit">
+      <input class = "btn btn-success btn-bg" id = "submit" type="submit" value="Submit" />
       </form>
       <div id = "main" class = "form-control"> </div>
       {%  include 'accounts/modal.html' %}
@@ -33,7 +34,43 @@
 </div>
 
 
+<script>
+$("#submit").prop('disabled' , true);
+var form = document.querySelector('form');
+form.addEventListener('change' , function(){
+    var start = $("#pickup").val();
+    var end = $("#dropoff").val(); 
+    let startDate = new Date(start);
+    let endDate = new Date(end);
 
+    var required = $('input,textarea,select').filter('[required]:visible');
+    var allRequired = true;
+    required.each(function(){
+      if($(this).val() == ''){
+        allRequired = false;
+      }
+      });
+
+      if(allRequired && startDate.getTime() < endDate.getTime() ){
+        $("#submit").prop('disabled' , false);
+      }else{
+        $("#submit").prop('disabled' , true);
+
+      }
+
+
+    });
+
+
+</script>
+
+
+<script>
+    $("#submit").click(function(){
+      swal("Success","Your reservation was succesfully made . In a few minutes you will receive an email with all the booking details" , "success"); 
+
+    });
+</script>
 <script>
     $("#id_city").change(function () {
   
@@ -85,7 +122,7 @@
    
 
 <script>
-    $('#submit').prop('disabled', true);
+    
     $("#dropoff").change(function(){
         var start = $("#pickup").val();
         var end = $("#dropoff").val(); 
@@ -94,14 +131,11 @@
         let endDate = new Date(end);
 
         if (startDate.getTime() >= endDate.getTime() ){
-          alert('Enter a valid date');         
-          $('#submit').prop('disabled', true);
-
-        }else{
-          $('#submit').prop('disabled', false);
+          swal("Error","Drop off needs to be after the pick up" , "warning");  
+                
+          
 
         }
-
     });
 
     $("#pickup").change(function(){
@@ -112,17 +146,12 @@
         let endDate = new Date(end);
 
         if (startDate.getTime() >= endDate.getTime() ){
-          alert('Enter a valid date');          
-          $('#submit').prop('disabled', true);
-
-        }else{
-          $('#submit').prop('disabled', false);
+          swal("Error","Pick up needs to be before the drop off" , "warning");
+                  
+          
 
         }
-
     });
-
-
 
 </script>
 
@@ -137,33 +166,41 @@
       let endDate = new Date(end);
 
       const diffDays = Math.round(Math.abs((startDate-endDate)/oneDay));
-      console.log(diffDays)
-  
-      var div = document.createElement("div");
-      document.getElementById("main").innerHTML = "";
-      div.innerHTML = 'Days : '+ diffDays;
-      document.getElementById("main").appendChild(div); 
+
+      if(document.getElementById("pickup").value.length != 0){
+        var div = document.createElement("div");
+        document.getElementById("main").innerHTML = "";
+        div.innerHTML = 'Days : '+ diffDays;
+        document.getElementById("main").appendChild(div);
+      }
       
     });
 
-    $("#pickup").change(function(){
+     $("#pickup").change(function(){
       var start = $("#pickup").val();
       var end = $("#dropoff").val();
 
       const oneDay = 24 * 60 * 60 * 1000;
-
+    
       let startDate = new Date(start);
       let endDate = new Date(end);
 
-      const diffDays = Math.round(Math.abs((startDate-endDate)/oneDay));
+      let diffDays = Math.round(Math.abs((startDate-endDate)/oneDay));
+      console.log(diffDays)
 
-      var div = document.createElement("div");
-      document.getElementById("main").innerHTML = "";
-      div.innerHTML = 'Days : '+ diffDays;
-      document.getElementById("main").appendChild(div);
+      if(document.getElementById("dropoff").value.length != 0){
+        var div = document.createElement("div");
+        document.getElementById("main").innerHTML = "";
+        div.innerHTML = 'Days : '+ diffDays;
+        document.getElementById("main").appendChild(div);
+      }
+  
     });
-    
 
 </script>
+
+
+
+
 
 {%endblock%}

@@ -30,7 +30,6 @@ def registerPage(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user =  form.save()
             username = form.cleaned_data.get('username')
 
             messages.success(request , 'Account was created for ' + username )
@@ -64,6 +63,7 @@ def logoutUser(request):
 @login_required(login_url = 'login')
 @admin_only
 def home(request):
+    
     reservations = Reservation.objects.all()
     customers = Customer.objects.all()
 
@@ -94,6 +94,7 @@ def userPage(request):
 
 
 @login_required(login_url = 'login')
+@allowed_users(allowed_roles = ['admin' , 'customer'])
 def userReservations(request):
 
     reservations = request.user.customer.reservation_set.all()
@@ -141,6 +142,8 @@ def station(request):
 def customer(request , pk):
     customer = Customer.objects.get(id = pk)
 
+    
+
     reservations = customer.reservation_set.all()
     total_reservations = reservations.count()
 
@@ -149,7 +152,7 @@ def customer(request , pk):
 
 
     context = {'customer':customer , 'reservations':reservations , 'total_reservations':total_reservations , 
-    'myFilter':myFilter}
+    'myFilter':myFilter }
 
     return render(request ,'accounts/customer.html' ,context )
 
@@ -167,7 +170,8 @@ def search(request):
 
     return render(request ,'accounts/search.html' ,context )
 
-
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles = ['admin'])
 def search1(request):
     customers = Customer.objects.all()
     
@@ -181,13 +185,22 @@ def search1(request):
 @login_required(login_url = 'login')
 @allowed_users(allowed_roles = ['admin' , 'customer'])
 def createReservation(request):
+
     customer = request.user.customer
+
     current_user = request.user
+
     car = request.GET.get('car')
+
     station = request.GET.get('station')
+
     city = request.GET.get('city')
+
     reservation = Reservation.objects.all()
+
     protection = Protection.objects.all()
+
+    car = request.GET.get('car')
 
     form = ReservationForm(initial = {'customer':customer , 'car':car , 'station':station , 'city':city})
 
@@ -246,12 +259,7 @@ def deleteReservation(request, pk):
 
 
 
-@login_required(login_url = 'login')
-def load_stations(request):
-    city_id = request.GET.get('city_id')
-    stations = Station.objects.filter(city_id=city_id).order_by('name')
-    return JsonResponse(list(stations.values('id', 'name')), safe=False)
-    # return render(request, 'accounts/city_dropdown_list_options.html', {'stations': stations})
+
 
 def validate_username(request):
     username = request.GET.get('username', None)

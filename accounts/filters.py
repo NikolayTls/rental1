@@ -18,4 +18,4 @@ class ReservationFilter2(django_filters.FilterSet):
     class Meta:
         model = Customer
         fields = '__all__'
-        exclude = ['profile_pic' , 'date_created']
+        exclude = ['profile_pic' , 'date_created' , 'user']

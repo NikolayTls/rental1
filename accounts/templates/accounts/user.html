@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block content %}
-
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 {% include 'accounts/status.html' %}
 
 
@@ -30,42 +31,43 @@
             
             <!-- Grid item -->
             <div class="col-lg-4 col-md-6 grid-item mb-4">
-                <a href = "/cars"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <a href = "/cars"> <i class="fas fa-car fa-8x"></i> </a>
                 <h2 class="h4">Cars</h2>
                 <p class="small text-muted font-italic" >Find our wild variety of cars</p>
             </div>
             
             <!-- Grid item -->
             <div class="col-lg-4 col-md-6 grid-item mb-4">
-                <a href = "/stations"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <a href = "/stations"> <i class="fas fa-store-alt fa-8x"></i> </a>
                 <h2 class="h4">Stations</h2>
                 <p class="small text-muted font-italic">You can book a car in more than 10 stations across Germnay</p>
             </div>
             
             <!-- Grid item -->
             <div class="col-lg-4 col-md-6 grid-item mb-4">
-                <a href = "/create_reservation"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <a href = "/create_reservation"> <i class="fas fa-book fa-8x"></i> </a>
                 <h2 class="h4">Book a car now</h2>
                 <p class="small text-muted font-italic">Make a reservation</p>
             </div>
             
             <!-- Grid item -->
             <div class="col-lg-4 col-md-6 grid-item mb-4">
-                <a href = "/user_reservations"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <a href = "/user_reservations"> <i class="fas fa-book-open fa-8x"></i> </a>
                 <h2 class="h4">My reservations</h2>
                 <p class="small text-muted font-italic">View your reservations</p>
             </div>
             
             <!-- Grid item -->
             <div class="col-lg-4 col-md-6 grid-item mb-4">
-                <a href = "/account"> <img class= "img-fluid" alt = "Responsive image" src="{% static 'images/golf.png'  %}" alt=""> </a>
+                <a href = "/account"> <i class="fas fa-user-cog fa-8x"></i> </a>
                 <h2 class="h4">Settings</h2>
                 <p class="small text-muted font-italic">Customize your settings</p>
+                
             </div>
+            
             
         </div>
     </div>
 </section>
-
 
 {%endblock%}

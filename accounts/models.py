@@ -12,7 +12,15 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
 
+    
 class Category(models.Model):
     category_name = models.CharField(max_length=100 , null = True)
     price_per_day = models.FloatField(max_length=10 , null = True)
@@ -25,6 +33,8 @@ class Category(models.Model):
 
     def __str__(self):
         return self.category_name
+
+    
 
 
 class Car(models.Model):
@@ -61,6 +71,7 @@ class Station(models.Model):
     post_code = models.CharField(max_length=100 , null = True)
     image = models.ImageField(null = True , blank = True)
     phone = models.CharField(max_length=100 , null = True)
+    email = models.CharField(max_length=100 , null = True)
     link = models.URLField(max_length=200, null = True)
     city = models.ForeignKey(City , on_delete = models.CASCADE)
 

@@ -8,8 +8,18 @@
 		max-height:200px;
 		margin: 0 auto;
 		border-radius: 50%;
+
+
+	
 	}
+
+	input {
+		
+  		border-radius: 4px;
+	  }
+
 </style>
+
 
 <br>
 <div class="row">
@@ -29,12 +39,21 @@
 			<form method="POST" action="" enctype="multipart/form-data">
 				{% csrf_token %}
 				{{form.as_p}}
+				
 		
 			<button class="btn btn-primary" type="submit">Update Information </button>
 			</form>
 		</div>
 	</div>
 </div>
+
+
+<script>
+	
+
+
+</script>
+
 
 
 
